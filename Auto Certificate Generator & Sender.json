@@ -1,0 +1,327 @@
+{
+  "name": "Auto Certificate Generator & Sender",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s",
+          "mode": "list",
+          "cachedResultName": "students  submited form",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1674523012,
+          "mode": "list",
+          "cachedResultName": "for certificate ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s/edit#gid=1674523012"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        240
+      ],
+      "id": "de755c99-2e13-4339-8e6b-20218895973b",
+      "name": "📥 New Passed Student",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "2YvWLHgrRpuNrv5C",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Sheet column নামে space/কোলন যা-ই থাকুক, নামের অংশ দিয়ে খুঁজে নেয়\nconst pick = (part) => {\n  const k = Object.keys($json).find(k => k.toLowerCase().includes(part));\n  return k ? String($json[k] ?? '').trim() : '';\n};\n\nconst name = pick('full name') || pick('name');\nconst email = pick('email').toLowerCase();\nconst course = pick('course') || 'Google Analytics Certification Course';\nconst total = pick('total');\nconst mcq = pick('mcq');\nconst short = pick('short');\n\n// certificate ইস্যুর দিন = আজকের তারিখ\nconst dateLong = DateTime.now().setZone('Asia/Dhaka').toFormat('d LLLL yyyy');\n\nreturn { json: {\n  name, email, course, total, mcq, short,\n  scoreText: `${total} / 25`,\n  dateLong,\n}};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        240
+      ],
+      "id": "653354c8-006b-41e6-a9e4-7807e337e2be",
+      "name": "🧹 Prepare Certificate Data"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "cachedResultName": "certificate-template-v2",
+          "cachedResultUrl": "https://docs.google.com/document/d/1VYfQpTaSvrKzg3K0LjGbJe7MoJmUo58w49D_DrFOya4/edit?usp=drivesdk",
+          "mode": "list",
+          "value": "1VYfQpTaSvrKzg3K0LjGbJe7MoJmUo58w49D_DrFOya4"
+        },
+        "name": "={{ $json.name }} - Google Analytics Certificate",
+        "sameFolder": false,
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "cachedResultName": "/ (Root folder)",
+          "mode": "list",
+          "value": "root"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        240
+      ],
+      "id": "166402b7-a660-4dbc-8f00-0d5d72a6279c",
+      "name": "📄 Copy Certificate Template",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "JRmi74gDcLdeqVD4",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "[[NAME]]",
+              "replaceText": "={{ $('🧹 Prepare Certificate Data').item.json.name }}",
+              "matchCase": true
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[COURSE]]",
+              "replaceText": "={{ $('🧹 Prepare Certificate Data').item.json.course }}",
+              "matchCase": true
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[SCORE]]",
+              "replaceText": "={{ $('🧹 Prepare Certificate Data').item.json.scoreText }}",
+              "matchCase": true
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[DATE]]",
+              "replaceText": "={{ $('🧹 Prepare Certificate Data').item.json.dateLong }}",
+              "matchCase": true
+            }
+          ]
+        }
+      },
+      "id": "40e12db2-271e-4a38-ac60-47b5f6aefed0",
+      "name": "📝 Fill Name, Score & Date",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        672,
+        240
+      ],
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "UGFVIQhUeAzUcE15",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('📄 Copy Certificate Template').item.json.id }}"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "application/pdf"
+            }
+          },
+          "fileName": "={{ $('🧹 Prepare Certificate Data').item.json.name }} - Certificate.pdf"
+        }
+      },
+      "id": "7ddf820a-4d48-404e-9791-394c991000c3",
+      "name": "📎 Export as PDF",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        896,
+        240
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "JRmi74gDcLdeqVD4",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('🧹 Prepare Certificate Data').item.json.email }}",
+        "subject": "=Congratulations {{ $('🧹 Prepare Certificate Data').item.json.name }}! Your Google Analytics Certificate is Ready",
+        "message": "=<div style=\"margin:0;padding:0;background:#05070d;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#05070d;padding:24px 0;\"><tr><td align=\"center\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:600px;width:100%;background:#0d1117;border:1px solid #1e3a8a;border-radius:12px;font-family:Arial,Helvetica,sans-serif;color:#e5e7eb;\"><tr><td align=\"center\" style=\"background:#1d4ed8;padding:30px 28px;border-radius:12px 12px 0 0;\"><div style=\"font-size:12px;letter-spacing:3px;color:#bfdbfe;text-transform:uppercase;\">Certificate of Completion</div><div style=\"font-size:24px;font-weight:bold;color:#ffffff;margin-top:8px;\">Congratulations!</div></td></tr><tr><td style=\"padding:28px 28px 8px 28px;\"><div style=\"font-size:17px;color:#ffffff;font-weight:bold;\">Dear {{ $('🧹 Prepare Certificate Data').item.json.name }},</div><div style=\"font-size:15px;line-height:1.7;color:#9ca3af;margin-top:12px;\">We are delighted to inform you that you have successfully passed the <b style=\"color:#60a5fa;\">{{ $('🧹 Prepare Certificate Data').item.json.course }}</b>. Your hard work and dedication have paid off. Your official certificate is attached to this email as a PDF.</div></td></tr><tr><td align=\"center\" style=\"padding:18px 28px;\"><table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#111827;border:1px solid #3b82f6;border-radius:10px;width:100%;\"><tr><td align=\"center\" style=\"padding:22px;\"><div style=\"font-size:13px;letter-spacing:2px;color:#9ca3af;text-transform:uppercase;\">Your Final Score</div><div style=\"font-size:36px;font-weight:bold;color:#3b82f6;margin-top:6px;\">{{ $('🧹 Prepare Certificate Data').item.json.scoreText }}</div><div style=\"font-size:16px;color:#ffffff;margin-top:8px;\">{{ Math.round($('🧹 Prepare Certificate Data').item.json.total / 25 * 100) }}% &nbsp;•&nbsp; PASSED</div></td></tr></table></td></tr><tr><td style=\"padding:0 28px 8px 28px;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-size:14px;\"><tr><td style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#9ca3af;\">MCQ Score</td><td align=\"right\" style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#ffffff;font-weight:bold;\">{{ $('🧹 Prepare Certificate Data').item.json.mcq }} / 10</td></tr><tr><td style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#9ca3af;\">Short Answer Score</td><td align=\"right\" style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#ffffff;font-weight:bold;\">{{ $('🧹 Prepare Certificate Data').item.json.short }} / 15</td></tr><tr><td style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#9ca3af;\">Date Issued</td><td align=\"right\" style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#ffffff;font-weight:bold;\">{{ $('🧹 Prepare Certificate Data').item.json.dateLong }}</td></tr></table></td></tr><tr><td style=\"padding:18px 28px 8px 28px;\"><div style=\"font-size:15px;line-height:1.7;color:#e5e7eb;background:#0b1220;border-left:4px solid #3b82f6;padding:14px 16px;border-radius:6px;\"><b style=\"color:#60a5fa;\">Your certificate is attached</b> to this email. You can download it, print it, or share it on LinkedIn to showcase your new skills.</div></td></tr><tr><td style=\"padding:22px 28px 28px 28px;border-top:1px solid #1f2937;\"><div style=\"font-size:14px;color:#9ca3af;line-height:1.6;\">Keep learning and keep growing.<br><br>Best regards,<br><span style=\"color:#60a5fa;font-weight:bold;\">NextGen Institute Team</span></div></td></tr></table></td></tr></table></div>",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          },
+          "senderName": "NextGen Institute"
+        }
+      },
+      "id": "62e8a3ea-8bcb-4c3e-8b2c-099404ef02b0",
+      "name": "📧 Email Certificate",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        240
+      ],
+      "webhookId": "b64933e5-a06e-4c92-9fbe-b67403d216a5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bSfWDEl1gAhJMQyk",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C2P6A98DB",
+          "mode": "list",
+          "cachedResultName": "nextgen-analytics-institute"
+        },
+        "text": "=:mortarboard: *Certificate Sent Successfully*\n\n*Student:* {{ $('🧹 Prepare Certificate Data').item.json.name }}\n*Email:* {{ $('🧹 Prepare Certificate Data').item.json.email }}\n*Course:* {{ $('🧹 Prepare Certificate Data').item.json.course }}\n*Score:* {{ $('🧹 Prepare Certificate Data').item.json.scoreText }} ({{ Math.round($('🧹 Prepare Certificate Data').item.json.total / 25 * 100) }}%)\n*Issued on:* {{ $('🧹 Prepare Certificate Data').item.json.dateLong }}\n*Status:* :white_check_mark: PDF certificate emailed\n*Certificate copy:* <https://docs.google.com/document/d/{{ $('📄 Copy Certificate Template').item.json.id }}/edit|Open in Google Docs>",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        1344,
+        240
+      ],
+      "id": "c0072bcc-9393-4abe-9a73-21b0196ae371",
+      "name": "💬 Notify on Slack",
+      "webhookId": "c2c1f4b9-6f3a-472c-9252-1899b34ca098",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "yCVBrGQrxtJJj02O",
+          "name": "Slack account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "🧹 Prepare Certificate Data": {
+      "main": [
+        [
+          {
+            "node": "📄 Copy Certificate Template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📥 New Passed Student": {
+      "main": [
+        [
+          {
+            "node": "🧹 Prepare Certificate Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📄 Copy Certificate Template": {
+      "main": [
+        [
+          {
+            "node": "📝 Fill Name, Score & Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📝 Fill Name, Score & Date": {
+      "main": [
+        [
+          {
+            "node": "📎 Export as PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📎 Export as PDF": {
+      "main": [
+        [
+          {
+            "node": "📧 Email Certificate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📧 Email Certificate": {
+      "main": [
+        [
+          {
+            "node": "💬 Notify on Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "25f18bfe-825b-4f1a-8dd9-5104f6ddfbaa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
+    "instanceId": "d5ebb673614b749e69feb02bc3a492474e36969d1c6e2793c3a02be760bb7954"
+  },
+  "nodeGroups": [],
+  "id": "x8KemayDm4xPhwUC",
+  "tags": []
+}

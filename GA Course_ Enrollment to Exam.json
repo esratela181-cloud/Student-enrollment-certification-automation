@@ -1,0 +1,680 @@
+{
+  "name": "GA Course: Enrollment to Exam",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a43eeab4-6c54-4fea-be97-93e853879655",
+              "name": "Full Name",
+              "value": "={{ $json[\"Full Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "30d55baf-35bc-435b-9650-bece82f52544",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "f1f05d6a-26b8-4679-bbe6-0a2e7f83e69b",
+              "name": "Phone Number",
+              "value": "={{ $json[\"Phone Number\"] }}",
+              "type": "number"
+            },
+            {
+              "id": "3563d445-6d2c-4b48-8aa7-660284681ae4",
+              "name": "Course Name",
+              "value": "={{ $json[\"Course Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "7ff12d4a-a75e-4af9-a5ea-16fde07aa01a",
+              "name": "Date",
+              "value": "={{ $json.Date }}",
+              "type": "string"
+            },
+            {
+              "id": "cb28f443-0543-476a-8d78-e069e984115b",
+              "name": "submissionDate",
+              "value": "={{ $json.Date }}",
+              "type": "string"
+            },
+            {
+              "id": "1e9cb5c9-70fd-420d-a8cd-e6b17e187e27",
+              "name": "reminderDate",
+              "value": "={{ $json[\"remainder date\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "838e0bac-4b13-42f3-aa30-5796a2ea0e87",
+              "name": "examDate",
+              "value": "={{ $json[\"exam date\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        960,
+        256
+      ],
+      "id": "6844d03c-b221-41a7-ab1a-be032507df14",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = [];\n\nfor (const item of $input.all()) {\n  const submittedDate = new Date(item.json.Date);\n\n  // Reminder date = submission date + 25 days\n  const reminderDate = new Date(submittedDate);\n  reminderDate.setDate(reminderDate.getDate() + 25);\n\n  // Exam date = submission date + 30 days\n  const examDate = new Date(submittedDate);\n  examDate.setDate(examDate.getDate() + 30);\n\n  results.push({\n    json: {\n      ...item.json,\n      submissionDate: submittedDate.toISOString().split('T')[0],   // YYYY-MM-DD\n      reminderDate: reminderDate.toISOString().split('T')[0],       // YYYY-MM-DD\n      examDate: examDate.toISOString().split('T')[0]                // YYYY-MM-DD\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        256
+      ],
+      "id": "7aa27c56-8769-4440-bfe4-1abbd550c5c6",
+      "name": "Calculate Reminder & Exam Dates"
+    },
+    {
+      "parameters": {
+        "formTitle": "Google Analytics Certification Course — 30-Day Program",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name"
+            },
+            {
+              "fieldLabel": "Email"
+            },
+            {
+              "fieldLabel": "Phone Number",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Course Name",
+              "defaultValue": "Google Analytics Certification Course"
+            },
+            {
+              "fieldLabel": "Date",
+              "fieldType": "date"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "2b1df655-ab0b-4850-a2bc-90d33b38eaa3",
+      "name": "Enrollment Form Trigger",
+      "webhookId": "3d71436c-3d06-4d6f-85f1-522c50db0fd7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eb06d939-8756-49cc-950a-510615f9f1ad",
+              "name": "Full Name",
+              "value": "={{ $json[\"Full Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "0a7149aa-dadd-4598-836c-988f10a3014a",
+              "name": "Email",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "de5fd25a-dd7a-45b5-825f-dbd3020935d0",
+              "name": "Phone Number",
+              "value": "={{ $json[\"Phone Number\"] }}",
+              "type": "number"
+            },
+            {
+              "id": "fe68e5cf-b568-4bdb-90e5-7b599fd322fe",
+              "name": "Course Name",
+              "value": "={{ $json[\"Course Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "37bb799a-c660-498b-b3c2-4970d2ef8c15",
+              "name": "Date",
+              "value": "={{ $json.submittedAt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        128,
+        0
+      ],
+      "id": "a703431c-0ad6-4ad3-b83f-6e79e753d13e",
+      "name": "Set Student Data"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C2P6A98DB",
+          "mode": "list",
+          "cachedResultName": "nextgen-analytics-institute"
+        },
+        "text": "=🎓 *New Admission Alert!*\n\nA new student has enrolled in the *Google Analytics Certification Course*.\n\n*Student Details:*\n- *Name:* {{ $json['Full Name'] }}\n- *Email:*{{ $json.Email }}\n- *Phone:* {{ $json['Phone Number'] }}\n- *Course:* Google Analytics Certification Course\n- *Submission Date:* {{ $json.Date }}\n\n\nPlease make sure the student is added to the WhatsApp group. ✅",
+        "otherOptions": {
+          "link_names": true
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        576,
+        -256
+      ],
+      "id": "f9d77ea3-1c50-4e92-9b2c-0784b451a98a",
+      "name": "💬 Slack: Notify New Enrollment",
+      "webhookId": "b18cce87-41dc-470b-842c-f9a8d3788e32",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "SxjnlF5hSqBo8x6o",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Google Analytics Certification Course",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Welcome - NextGen Institute</title>\n<style>\n  body {\n    margin: 0;\n    padding: 0;\n    background-color: #000000;\n    font-family: 'Segoe UI', Arial, sans-serif;\n  }\n  .email-wrapper {\n    max-width: 600px;\n    margin: 0 auto;\n    background-color: #0b0b0b;\n  }\n  .header {\n    background: linear-gradient(135deg, #000000 0%, #111111 100%);\n    padding: 45px 30px 35px;\n    text-align: center;\n    border-bottom: 1px solid #2a2a2a;\n  }\n  .header .badge {\n    display: inline-block;\n    padding: 6px 16px;\n    border: 1px solid #3d9bff;\n    border-radius: 30px;\n    color: #3d9bff;\n    font-size: 11px;\n    letter-spacing: 2px;\n    text-transform: uppercase;\n    margin-bottom: 18px;\n  }\n  .header h1 {\n    color: #ffffff;\n    margin: 0;\n    font-size: 24px;\n    font-weight: 600;\n    letter-spacing: 0.5px;\n  }\n  .header p {\n    color: #8a8a8a;\n    margin: 10px 0 0;\n    font-size: 14px;\n  }\n  .body-content {\n    padding: 40px 32px;\n    color: #e6e6e6;\n    line-height: 1.75;\n  }\n  .body-content h2 {\n    color: #ffffff;\n    font-size: 20px;\n    margin-top: 0;\n    font-weight: 600;\n  }\n  .body-content p {\n    font-size: 15px;\n    color: #c4c4c4;\n  }\n  .highlight-box {\n    background-color: #111111;\n    border: 1px solid #2a2a2a;\n    border-left: 3px solid #3d9bff;\n    padding: 18px 22px;\n    margin: 26px 0;\n    border-radius: 6px;\n  }\n  .highlight-box p {\n    margin: 0;\n    font-size: 14px;\n    color: #d0d0d0;\n  }\n  .highlight-box strong {\n    color: #ffffff;\n  }\n  .btn-container {\n    text-align: center;\n    margin: 34px 0 10px;\n  }\n  .btn {\n    display: inline-block;\n    background-color: #3d9bff;\n    color: #000000 !important;\n    text-decoration: none;\n    padding: 15px 36px;\n    border-radius: 6px;\n    font-size: 15px;\n    font-weight: 700;\n    letter-spacing: 0.3px;\n  }\n  .divider {\n    border: none;\n    border-top: 1px solid #222222;\n    margin: 34px 0;\n  }\n  .signature {\n    color: #8a8a8a;\n    font-size: 14px;\n  }\n  .signature strong {\n    color: #ffffff;\n  }\n  .footer {\n    background-color: #000000;\n    color: #6b6b6b;\n    text-align: center;\n    padding: 28px 20px;\n    font-size: 12px;\n    border-top: 1px solid #1f1f1f;\n  }\n  .footer p {\n    margin: 5px 0;\n  }\n  .footer a {\n    color: #3d9bff;\n    text-decoration: none;\n  }\n</style>\n</head>\n<body>\n  <div class=\"email-wrapper\">\n\n    <div class=\"header\">\n      <p style=\"color:#3d9bff; font-size:13px; letter-spacing:3px; text-transform:uppercase; margin:0 0 14px;\">NextGen Institute</p>\n      <span class=\"badge\">Enrollment Confirmed</span>\n      <h1>Google Analytics Certification Course</h1>\n      <p>Welcome to your learning journey</p>\n    </div>\n\n    <div class=\"body-content\">\n      <h2>Hello {{ $json['Full Name'] }} , welcome! 👋</h2>\n      <p>\n        Thank you for enrolling in the <strong style=\"color:#ffffff;\">Google Analytics Certification Course</strong>.\n        Your admission has been successfully confirmed, and we're excited to have you on board.\n      </p>\n\n      <div class=\"highlight-box\">\n        <p>\n          📌 All future updates, class schedules, and important notices will be shared through\n          our <strong>WhatsApp Group</strong> and via <strong>Email</strong>. Please join the group below\n          so you never miss an update.\n        </p>\n      </div>\n\n      <div class=\"btn-container\">\n        <a href=\"https://whatsapp.com\" class=\"btn\" target=\"_blank\">Join WhatsApp Group →</a>\n      </div>\n\n      <hr class=\"divider\">\n\n      <p>\n        If you have any questions along the way, feel free to reach out — we're here to support you\n        throughout the course.\n      </p>\n\n      <p class=\"signature\" style=\"margin-top: 28px;\">\n        Best regards,<br>\n        <strong>NextGen Institute Team</strong>\n      </p>\n    </div>\n\n    <div class=\"footer\">\n      <p>© NextGen Institute. This is an automated message. Please do not reply directly to this email.</p>\n      <p><a href=\"https://whatsapp.com\">Join our WhatsApp Group</a></p>\n    </div>\n\n  </div>\n</body>\n</html>",
+        "options": {
+          "senderName": "NextGen  Institute"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        -80
+      ],
+      "id": "c83f2289-6879-4bdc-b183-a90574201e29",
+      "name": "Gmail: Send Welcome Email",
+      "webhookId": "812172a1-2342-40ed-a678-c8c2d5f596c5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bSfWDEl1gAhJMQyk",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc",
+          "mode": "list",
+          "cachedResultName": "Google Analytics Certification Course",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "students  details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.Date }}",
+            "Course Name": "={{ $json[\"Course Name\"] }}",
+            "Phone Number": "={{ $json[\"Phone Number\"] }}",
+            "Email": "={{ $json.Email }}",
+            "Full Name": "={{ $json[\"Full Name\"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Course Name",
+              "displayName": "Course Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        80
+      ],
+      "id": "788ae597-ebeb-411f-be2a-bd34b6f49ef6",
+      "name": "📊 Sheets: Save Student Record",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gMET6VW9mKOc04zd",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc",
+          "mode": "list",
+          "cachedResultName": "Google Analytics Certification Course",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1898372841,
+          "mode": "list",
+          "cachedResultName": "পত্রক2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc/edit#gid=1898372841"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.reminderDate }}",
+            "Full Name": "={{ $json[\"Full Name\"] }}",
+            "Email": "={{ $json.Email }}",
+            "Course Name": "={{ $json[\"Course Name\"] }}",
+            "Phone Number": "={{ $json[\"Phone Number\"] }}",
+            "remainder date": "={{ $json.reminderDate }}",
+            "exam date": "={{ $json.examDate }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Course Name",
+              "displayName": "Course Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "remainder date",
+              "displayName": "remainder date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "exam date",
+              "displayName": "exam date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        256
+      ],
+      "id": "bb08a4dd-7bbc-47c0-bc2c-d6cfaa2e747b",
+      "name": "Sheets: Save Reminder Dates",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gMET6VW9mKOc04zd",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1168,
+        144
+      ],
+      "id": "89e96547-7396-4595-8136-60e51048eda4",
+      "name": "⏳ Wait 25 Days",
+      "webhookId": "f626477a-6f1f-4b74-8d62-195e9a78126f"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1184,
+        352
+      ],
+      "id": "fb97587a-6cf9-4960-97cf-246cd0babf87",
+      "name": "⏳ Wait 30 Days",
+      "webhookId": "918397e4-3e17-48f7-907d-4d1692186fd3"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "⏰ 5 Days Left – Your Google Analytics Exam is Coming Up",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Exam Reminder - NextGen Institute</title>\n<style>\n  body {\n    margin: 0;\n    padding: 0;\n    background-color: #000000;\n    font-family: 'Segoe UI', Arial, sans-serif;\n  }\n  .email-wrapper {\n    max-width: 600px;\n    margin: 0 auto;\n    background-color: #0b0b0b;\n  }\n  .header {\n    background: linear-gradient(135deg, #000000 0%, #111111 100%);\n    padding: 45px 30px 35px;\n    text-align: center;\n    border-bottom: 1px solid #2a2a2a;\n  }\n  .header .brand {\n    color: #3d9bff;\n    font-size: 13px;\n    letter-spacing: 3px;\n    text-transform: uppercase;\n    margin: 0 0 14px;\n  }\n  .header .badge {\n    display: inline-block;\n    padding: 6px 16px;\n    border: 1px solid #ff6b4a;\n    border-radius: 30px;\n    color: #ff6b4a;\n    font-size: 11px;\n    letter-spacing: 2px;\n    text-transform: uppercase;\n    margin-bottom: 18px;\n  }\n  .header h1 {\n    color: #ffffff;\n    margin: 0;\n    font-size: 24px;\n    font-weight: 600;\n    letter-spacing: 0.5px;\n  }\n  .header p {\n    color: #8a8a8a;\n    margin: 10px 0 0;\n    font-size: 14px;\n  }\n  .body-content {\n    padding: 40px 32px;\n    color: #e6e6e6;\n    line-height: 1.75;\n  }\n  .body-content h2 {\n    color: #ffffff;\n    font-size: 20px;\n    margin-top: 0;\n    font-weight: 600;\n  }\n  .body-content p {\n    font-size: 15px;\n    color: #c4c4c4;\n  }\n  .countdown-box {\n    background-color: #111111;\n    border: 1px solid #2a2a2a;\n    border-left: 3px solid #ff6b4a;\n    padding: 20px 22px;\n    margin: 26px 0;\n    border-radius: 6px;\n    text-align: center;\n  }\n  .countdown-box .days {\n    color: #ff6b4a;\n    font-size: 34px;\n    font-weight: 700;\n    margin: 0;\n  }\n  .countdown-box .label {\n    color: #9a9a9a;\n    font-size: 13px;\n    letter-spacing: 1px;\n    text-transform: uppercase;\n    margin: 4px 0 0;\n  }\n  .details-box {\n    background-color: #111111;\n    border: 1px solid #2a2a2a;\n    border-radius: 6px;\n    padding: 18px 22px;\n    margin: 26px 0;\n  }\n  .details-box table {\n    width: 100%;\n    border-collapse: collapse;\n  }\n  .details-box td {\n    padding: 8px 0;\n    font-size: 14px;\n    color: #d0d0d0;\n    border-bottom: 1px solid #1f1f1f;\n  }\n  .details-box tr:last-child td {\n    border-bottom: none;\n  }\n  .details-box td:first-child {\n    color: #8a8a8a;\n    width: 40%;\n  }\n  .details-box td:last-child {\n    color: #ffffff;\n    font-weight: 600;\n  }\n  .highlight-box {\n    background-color: #111111;\n    border: 1px solid #2a2a2a;\n    border-left: 3px solid #3d9bff;\n    padding: 18px 22px;\n    margin: 26px 0;\n    border-radius: 6px;\n  }\n  .highlight-box p {\n    margin: 0;\n    font-size: 14px;\n    color: #d0d0d0;\n  }\n  .highlight-box strong {\n    color: #ffffff;\n  }\n  .btn-container {\n    text-align: center;\n    margin: 34px 0 10px;\n  }\n  .btn {\n    display: inline-block;\n    background-color: #3d9bff;\n    color: #000000 !important;\n    text-decoration: none;\n    padding: 15px 36px;\n    border-radius: 6px;\n    font-size: 15px;\n    font-weight: 700;\n    letter-spacing: 0.3px;\n  }\n  .divider {\n    border: none;\n    border-top: 1px solid #222222;\n    margin: 34px 0;\n  }\n  .signature {\n    color: #8a8a8a;\n    font-size: 14px;\n  }\n  .signature strong {\n    color: #ffffff;\n  }\n  .footer {\n    background-color: #000000;\n    color: #6b6b6b;\n    text-align: center;\n    padding: 28px 20px;\n    font-size: 12px;\n    border-top: 1px solid #1f1f1f;\n  }\n  .footer p {\n    margin: 5px 0;\n  }\n  .footer a {\n    color: #3d9bff;\n    text-decoration: none;\n  }\n</style>\n</head>\n<body>\n  <div class=\"email-wrapper\">\n\n    <div class=\"header\">\n      <p class=\"brand\">NextGen Institute</p>\n      <span class=\"badge\">Exam Reminder</span>\n      <h1>Google Analytics Certification Course</h1>\n      <p>Your exam is coming up soon</p>\n    </div>\n\n    <div class=\"body-content\">\n      <h2>Hello {{ $json['Full Name'] }},</h2>\n      <p>\n        This is a friendly reminder that your <strong style=\"color:#ffffff;\">Google Analytics Certification\n        Course</strong> exam is approaching. Please make sure you're fully prepared before the exam date.\n      </p>\n\n      <div class=\"countdown-box\">\n        <p class=\"days\">5 Days Left</p>\n        <p class=\"label\">Until Your Exam</p>\n      </div>\n\n      <div class=\"details-box\">\n        <table>\n          <tr>\n            <td>Exam Date</td>\n            <td>{{ $json.examDate }} (30th)</td>\n          </tr>\n          <tr>\n            <td>Course</td>\n            <td>Google Analytics Certification</td>\n          </tr>\n          <tr>\n            <td>Reminder Sent</td>\n            <td>{{ $json.reminderDate }} (25th)</td>\n          </tr>\n        </table>\n      </div>\n\n      <div class=\"highlight-box\">\n        <p>\n          📌 As always, any further updates or notices regarding the exam will be shared through\n          our <strong>WhatsApp Group</strong> and via <strong>Email</strong>. Please make sure you've\n          joined the group so you don't miss anything important.\n        </p>\n      </div>\n\n      <div class=\"btn-container\">\n        <a href=\"https://whatsapp.com\" class=\"btn\" target=\"_blank\">Join WhatsApp Group →</a>\n      </div>\n\n      <hr class=\"divider\">\n\n      <p>\n        Use the remaining days to revise key topics and reach out if you have any questions —\n        we're here to help you succeed.\n      </p>\n\n      <p class=\"signature\" style=\"margin-top: 28px;\">\n        Best regards,<br>\n        <strong>NextGen Institute Team</strong>\n      </p>\n    </div>\n\n    <div class=\"footer\">\n      <p>© NextGen Institute. This is an automated message. Please do not reply directly to this email.</p>\n      <p><a href=\"https://whatsapp.com\">Join our WhatsApp Group</a></p>\n    </div>\n\n  </div>\n</body>\n</html>",
+        "options": {
+          "senderName": "NextGen Institute"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        144
+      ],
+      "id": "fd258047-440a-48b5-9387-6bb2d035c9f8",
+      "name": "Gmail: Send 25-Day Reminder",
+      "webhookId": "cce13141-d75d-4038-b613-e7087ef9bc7f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bSfWDEl1gAhJMQyk",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "🎓 Your Google Analytics Certification Exam is Live – Start Now",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Exam Link - NextGen Institute</title>\n<style>\n  body {\n    margin: 0;\n    padding: 0;\n    background-color: #000000;\n    font-family: 'Segoe UI', Arial, sans-serif;\n  }\n  .email-wrapper {\n    max-width: 600px;\n    margin: 0 auto;\n    background-color: #0b0b0b;\n  }\n  .header {\n    background: linear-gradient(135deg, #000000 0%, #111111 100%);\n    padding: 45px 30px 35px;\n    text-align: center;\n    border-bottom: 1px solid #2a2a2a;\n  }\n  .header .brand {\n    color: #3d9bff;\n    font-size: 13px;\n    letter-spacing: 3px;\n    text-transform: uppercase;\n    margin: 0 0 14px;\n  }\n  .header .badge {\n    display: inline-block;\n    padding: 6px 16px;\n    border: 1px solid #4ade80;\n    border-radius: 30px;\n    color: #4ade80;\n    font-size: 11px;\n    letter-spacing: 2px;\n    text-transform: uppercase;\n    margin-bottom: 18px;\n  }\n  .header h1 {\n    color: #ffffff;\n    margin: 0;\n    font-size: 24px;\n    font-weight: 600;\n    letter-spacing: 0.5px;\n  }\n  .header p {\n    color: #8a8a8a;\n    margin: 10px 0 0;\n    font-size: 14px;\n  }\n  .body-content {\n    padding: 40px 32px;\n    color: #e6e6e6;\n    line-height: 1.75;\n  }\n  .body-content h2 {\n    color: #ffffff;\n    font-size: 20px;\n    margin-top: 0;\n    font-weight: 600;\n  }\n  .body-content h3 {\n    color: #ffffff;\n    font-size: 16px;\n    margin: 0 0 14px;\n  }\n  .body-content p {\n    font-size: 15px;\n    color: #c4c4c4;\n  }\n  .details-box {\n    background-color: #111111;\n    border: 1px solid #2a2a2a;\n    border-radius: 6px;\n    padding: 18px 22px;\n    margin: 26px 0;\n  }\n  .details-box table {\n    width: 100%;\n    border-collapse: collapse;\n  }\n  .details-box td {\n    padding: 8px 0;\n    font-size: 14px;\n    color: #d0d0d0;\n    border-bottom: 1px solid #1f1f1f;\n  }\n  .details-box tr:last-child td {\n    border-bottom: none;\n  }\n  .details-box td:first-child {\n    color: #8a8a8a;\n    width: 40%;\n  }\n  .details-box td:last-child {\n    color: #ffffff;\n    font-weight: 600;\n  }\n  .rules-box {\n    background-color: #111111;\n    border: 1px solid #2a2a2a;\n    border-left: 3px solid #ff6b4a;\n    padding: 20px 22px;\n    margin: 26px 0;\n    border-radius: 6px;\n  }\n  .rules-box ul {\n    margin: 0;\n    padding-left: 20px;\n  }\n  .rules-box li {\n    font-size: 14px;\n    color: #d0d0d0;\n    margin-bottom: 10px;\n  }\n  .rules-box li:last-child {\n    margin-bottom: 0;\n  }\n  .rules-box li strong {\n    color: #ffffff;\n  }\n  .highlight-box {\n    background-color: #111111;\n    border: 1px solid #2a2a2a;\n    border-left: 3px solid #3d9bff;\n    padding: 18px 22px;\n    margin: 26px 0;\n    border-radius: 6px;\n  }\n  .highlight-box p {\n    margin: 0;\n    font-size: 14px;\n    color: #d0d0d0;\n  }\n  .highlight-box strong {\n    color: #ffffff;\n  }\n  .btn-container {\n    text-align: center;\n    margin: 34px 0 10px;\n  }\n  .btn {\n    display: inline-block;\n    background-color: #4ade80;\n    color: #000000 !important;\n    text-decoration: none;\n    padding: 15px 36px;\n    border-radius: 6px;\n    font-size: 15px;\n    font-weight: 700;\n    letter-spacing: 0.3px;\n  }\n  .btn-secondary {\n    display: inline-block;\n    background-color: #3d9bff;\n    color: #000000 !important;\n    text-decoration: none;\n    padding: 15px 36px;\n    border-radius: 6px;\n    font-size: 15px;\n    font-weight: 700;\n    letter-spacing: 0.3px;\n  }\n  .divider {\n    border: none;\n    border-top: 1px solid #222222;\n    margin: 34px 0;\n  }\n  .signature {\n    color: #8a8a8a;\n    font-size: 14px;\n  }\n  .signature strong {\n    color: #ffffff;\n  }\n  .footer {\n    background-color: #000000;\n    color: #6b6b6b;\n    text-align: center;\n    padding: 28px 20px;\n    font-size: 12px;\n    border-top: 1px solid #1f1f1f;\n  }\n  .footer p {\n    margin: 5px 0;\n  }\n  .footer a {\n    color: #3d9bff;\n    text-decoration: none;\n  }\n</style>\n</head>\n<body>\n  <div class=\"email-wrapper\">\n\n    <div class=\"header\">\n      <p class=\"brand\">NextGen Institute</p>\n      <span class=\"badge\">Exam Live</span>\n      <h1>Google Analytics Certification Course</h1>\n      <p>Your final exam is ready</p>\n    </div>\n\n    <div class=\"body-content\">\n      <h2>Hello {{ $json['Full Name'] }} ,</h2>\n      <p>\n        Your <strong style=\"color:#ffffff;\">Google Analytics Certification Course</strong> exam is now\n        open. Please read the instructions below carefully before you begin.\n      </p>\n\n      <div class=\"details-box\">\n        <table>\n          <tr>\n            <td>Total Marks</td>\n            <td>25</td>\n          </tr>\n          <tr>\n            <td>Time Limit</td>\n            <td>50 Minutes</td>\n          </tr>\n          <tr>\n            <td>Sections</td>\n            <td>MCQ (10) + Short Answer (5)</td>\n          </tr>\n          <tr>\n            <td>Deadline</td>\n            <td>{{ $json.examDate }} </td>\n          </tr>\n        </table>\n      </div>\n\n      <div class=\"btn-container\">\n        <a href=\"https://forms.gle/FaGoACABpD34Avzv5\" class=\"btn\" target=\"_blank\">Start Exam →</a>\n      </div>\n\n      <div class=\"rules-box\">\n        <h3>📋 Exam Rules</h3>\n        <ul>\n          <li><strong>Time Limit:</strong> You have exactly 50 minutes to complete the exam once you start. Manage your time wisely.</li>\n          <li><strong>One Attempt Only:</strong> The exam can be submitted only once. Please review your answers before submitting.</li>\n          <li><strong>No External Help:</strong> This is an individual assessment — do not take help from others or copy answers.</li>\n          <li><strong>Stable Internet:</strong> Make sure you have a stable internet connection before starting. Progress is not saved unless you're signed in to Google.</li>\n          <li><strong>Answer Everything:</strong> All 15 questions (10 MCQ + 5 short answer) are mandatory.</li>\n          <li><strong>Submit Before Deadline:</strong> Exams submitted after the deadline will not be accepted.</li>\n        </ul>\n      </div>\n\n      <div class=\"highlight-box\">\n        <p>\n          📌 If you face any technical issues during the exam, message us immediately on the\n          <strong>WhatsApp Group</strong> or reply to this email.\n        </p>\n      </div>\n\n      <div class=\"btn-container\">\n        <a href=\"https://whatsapp.com\" class=\"btn-secondary\" target=\"_blank\">Join WhatsApp Group</a>\n      </div>\n\n      <hr class=\"divider\">\n\n      <p>\n        Best of luck! Trust your preparation and answer confidently.\n      </p>\n\n      <p class=\"signature\" style=\"margin-top: 28px;\">\n        Best regards,<br>\n        <strong>NextGen Institute Team</strong>\n      </p>\n    </div>\n\n    <div class=\"footer\">\n      <p>© NextGen Institute. This is an automated message. Please do not reply directly to this email.</p>\n      <p><a href=\"https://whatsapp.com\">Join our WhatsApp Group</a></p>\n    </div>\n\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1408,
+        352
+      ],
+      "id": "5bc6746d-47a4-4fcc-8431-7221947500ca",
+      "name": "Gmail: Send 30-Day Exam Link",
+      "webhookId": "52ece109-ae95-47ac-9001-6b07cba30d9c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bSfWDEl1gAhJMQyk",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s",
+          "mode": "list",
+          "cachedResultName": "questions and result ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 728560924,
+          "mode": "list",
+          "cachedResultName": "1টি ফর্ম প্রতিক্রিয়া",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s/edit#gid=728560924"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "  Email:  ",
+              "lookupValue": "={{ $('⏳ Wait 30 Days').item.json.Email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1584,
+        352
+      ],
+      "id": "18e88469-22e3-49c1-8a36-ba3e96556dc1",
+      "name": "Sheets: Get Student Answers",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gMET6VW9mKOc04zd",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        96,
+        384
+      ],
+      "id": "8aa8f0ff-72b9-4518-bf47-6d83e5963581",
+      "name": " Error Handler Trigger",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "⏳ Wait 30 Days",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "⏳ Wait 25 Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Reminder & Exam Dates": {
+      "main": [
+        [
+          {
+            "node": "Sheets: Save Reminder Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrollment Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Student Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Student Data": {
+      "main": [
+        [
+          {
+            "node": "📊 Sheets: Save Student Record",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail: Send Welcome Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "💬 Slack: Notify New Enrollment",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Calculate Reminder & Exam Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sheets: Save Reminder Dates": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⏳ Wait 25 Days": {
+      "main": [
+        [
+          {
+            "node": "Gmail: Send 25-Day Reminder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⏳ Wait 30 Days": {
+      "main": [
+        [
+          {
+            "node": "Gmail: Send 30-Day Exam Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail: Send 30-Day Exam Link": {
+      "main": [
+        [
+          {
+            "node": "Sheets: Get Student Answers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6b8ea4db-1ceb-46ae-a79a-12243a5a107a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d5ebb673614b749e69feb02bc3a492474e36969d1c6e2793c3a02be760bb7954"
+  },
+  "nodeGroups": [],
+  "id": "p1tE0aeZ3TG2h8Dw",
+  "tags": []
+}

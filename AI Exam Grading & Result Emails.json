@@ -1,0 +1,826 @@
+{
+  "name": "AI Exam Grading & Result Emails",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s",
+          "mode": "list",
+          "cachedResultName": "questions and result ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 728560924,
+          "mode": "list",
+          "cachedResultName": "1টি ফর্ম প্রতিক্রিয়া",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s/edit#gid=728560924"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1231be6d-3630-4b3f-aaf7-116dff14a9e2",
+      "name": "New Exam Submission",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "2YvWLHgrRpuNrv5C",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "427b0c70-b48e-4a4e-aa9c-89d78edbe9a2",
+              "name": "=টাইমস্ট্যাম্প",
+              "value": "={{ $json[\"টাইমস্ট্যাম্প\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "8c12b23a-db05-4d91-b742-82a1852a59d5",
+              "name": "Full Name",
+              "value": "={{ $json[\"Full Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "a76ba95e-bf79-4ac9-a6d2-18e901c6e50f",
+              "name": "  Email:  ",
+              "value": "={{ $json[\"  Email:  \"] }}",
+              "type": "string"
+            },
+            {
+              "id": "63310e0f-296d-49cd-9ce4-55c00c831c46",
+              "name": "Course:",
+              "value": "={{ $json[\"Course:\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "1e49b487-864e-4b3e-9144-0ef27f0fc03e",
+              "name": " Date:",
+              "value": "={{ $json[\" Date:\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "a98859c3-483e-4d26-b7c7-31fdb298b6d9",
+              "name": "1. What is the primary purpose of Google Analytics?",
+              "value": "={{ $json[\"1. What is the primary purpose of Google Analytics?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "6de002e0-c714-4dc6-96ae-f5301651527f",
+              "name": "2 .In Google Analytics 4 (GA4), what is the basic unit of data collection called?",
+              "value": "={{ $json[\"2 .In Google Analytics 4 (GA4), what is the basic unit of data collection called?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "b1d3f0c0-caff-433c-9d7b-9c7a8c4844d3",
+              "name": "3 Which report in GA4 shows how users navigate through your website?",
+              "value": "={{ $json[\"3 Which report in GA4 shows how users navigate through your website?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "da9fd11b-7c74-4883-a2a1-591058a046be",
+              "name": "=4. What does \"Bounce Rate\" traditionally measure?",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"Bounce Rate\"))[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "88231862-7fac-4e95-bafb-5c0287ef1d96",
+              "name": "5. Which metric shows the percentage of sessions that had meaningful interaction in GA4?",
+              "value": "={{ $json[\"5. Which metric shows the percentage of sessions that had meaningful interaction in GA4?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "1ee23f2f-4a86-449d-8f5d-f33dda10a0cd",
+              "name": "=6. What is a \"Goal\" (or \"Conversion\" in GA4) used for?\n",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"used for\"))[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "a1f91dfc-469b-4401-bb1e-bf10e69ea176",
+              "name": "7. Which tool is used to implement Google Analytics tracking code without editing website code directly?\n",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"implement\"))[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "de1d6918-5b65-445a-89c0-a3cc01dac075",
+              "name": "\n8. What does UTM stand for in campaign tracking?\n",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"UTM stand for\"))[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "acf183dc-0374-4f6c-9b0f-47b420542c22",
+              "name": "9. Which dimension shows where your traffic is coming from (e.g., Google, Facebook, Direct)?\n",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"traffic is coming from\"))[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "e59dd37b-9baa-4455-9f96-66a44382517d",
+              "name": "10. In GA4, what replaces the concept of \"Views\" from Universal Analytics?\n",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"replaces the concept\"))[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "6799da1b-3adf-4671-b1ac-f8202715c0c6",
+              "name": "1. Explain the difference between Universal Analytics and GA4. (any 2-3 key differences)",
+              "value": "={{ $json[\"1. Explain the difference between Universal Analytics and GA4. (any 2-3 key differences)\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "93898cb4-73b0-4727-822a-373511b4244f",
+              "name": "2. What is an \"Event\" in GA4? Give two examples of custom events.",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"custom events\"))[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "7e851506-53f5-4f8e-a3e9-ed7dd8dab347",
+              "name": "3. How does UTM parameter tracking help in measuring campaign performance?",
+              "value": "={{ $json[\"3. How does UTM parameter tracking help in measuring campaign performance?\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "63f9e05e-f47c-4225-8a47-efcd4a2ec832",
+              "name": "4. Explain the purpose of \"Audiences\" in Google Analytics.",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"Audiences\"))[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "1d4959aa-ceb6-4f68-8176-fe6af4257f87",
+              "name": "5. What steps would you take to set up a conversion goal for a \"Contact Form Submission\"?",
+              "value": "={{ Object.entries($json).find(([k]) => k.includes(\"Contact Form\"))[1] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "4d6c0cae-61f9-467d-8fab-62e9dac25adc",
+      "name": "Clean Form Data"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "27bebf0a-0871-4b99-809c-29730017caa9",
+      "name": "Process Each Student"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc",
+          "mode": "list",
+          "cachedResultName": "Google Analytics Certification Course",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "students  details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YfQHpnTOmge3eL7KmkpN9xv63eV-XgN3FxwErzgwOEc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Email",
+              "lookupValue": "={{ $json[\"  Email:  \"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        0
+      ],
+      "id": "e71d0347-e63b-4fe7-b255-ef3df952c70f",
+      "name": "Find Student Record",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gMET6VW9mKOc04zd",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e8a02884-6c18-4466-a342-d981c178cfdb",
+              "leftValue": "={{ $json.Email }}",
+              "rightValue": "={{ $('New Exam Submission').item.json[\"  Email:  \"] }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        0
+      ],
+      "id": "29a2c89a-0d8c-45fe-a220-b33b10eece87",
+      "name": "✅ Student Matched?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const WAIT_DAYS = 30;\nconst ONLY_READY = false; // true দিলে শুধু ৩০ দিন পার হওয়া lead গুলোই পরের node এ যাবে\nconst DAY_MS = 24 * 60 * 60 * 1000;\nconst now = new Date();\nconst out = [];\n\nfor (const item of $input.all()) {\n  const row = item.json;\n  const submitted = new Date(row[\"Date\"]);\n\n  // Date ভুল বা খালি হলে\n  if (isNaN(submitted.getTime())) {\n    out.push({\n      json: {\n        ...row,\n        Email: String(row[\"Email\"] ?? \"\").trim().toLowerCase(),\n        \"Full Name\": String(row[\"Full Name\"] ?? \"\").trim(),\n        isReady: false,\n        reason: \"Invalid or missing Date\",\n      },\n    });\n    continue;\n  }\n\n  const daysPassed = Math.floor((now - submitted) / DAY_MS);\n  const readyOn = new Date(submitted.getTime() + WAIT_DAYS * DAY_MS);\n  const isReady = daysPassed >= WAIT_DAYS;\n\n  out.push({\n    json: {\n      ...row,\n      \"Full Name\": String(row[\"Full Name\"] ?? \"\").trim(),\n      Email: String(row[\"Email\"] ?? \"\").trim().toLowerCase(),\n      submittedAt: submitted.toISOString(),\n      daysPassed,\n      daysRemaining: isReady ? 0 : WAIT_DAYS - daysPassed,\n      readyOn: readyOn.toISOString(),\n      isReady,\n      reason: isReady ? \"30 days passed\" : `Wait ${WAIT_DAYS - daysPassed} more day(s)`,\n    },\n  });\n}\n\nreturn ONLY_READY ? out.filter(i => i.json.isReady) : out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        -96
+      ],
+      "id": "b378c810-3cb0-4798-b2d3-e371021d196c",
+      "name": "⏳ 30-Day Wait Check"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "cf05bab5-ee63-401e-9427-7cb9da34e528",
+              "leftValue": "={{ $json.isReady }}",
+              "rightValue": "=is true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1344,
+        -96
+      ],
+      "id": "0b8d543c-56dd-4cf7-a634-4f1514fb4f20",
+      "name": "Ready for Grading?"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1472,
+        144
+      ],
+      "id": "886e7e0e-3583-4773-a327-733761a6df6c",
+      "name": "GPT-4o",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const PASS_MARK = 15;\nconst OUT_OF = 25;\n\n// AI যদি ```json ... ``` দিয়ে ঘিরে দেয়, সেটা কেটে শুধু JSON নেয়\nconst parseAI = (val) => {\n  if (typeof val !== \"string\") return val;\n  const cleaned = val\n    .replace(/```json/gi, \"\")\n    .replace(/```/g, \"\")\n    .trim();\n  const start = cleaned.indexOf(\"{\");\n  const end = cleaned.lastIndexOf(\"}\");\n  return JSON.parse(cleaned.slice(start, end + 1));\n};\n\nreturn $input.all().map(item => {\n  const r = parseAI(item.json.output ?? item.json);\n\n  const s = r.short_scores;\n  const shortTotal = s.q1 + s.q2 + s.q3 + s.q4 + s.q5;\n  const total = Number(r.mcq_score) + shortTotal;\n\n  return { json: {\n    ...r,\n    short_total: shortTotal,\n    total,\n    out_of: OUT_OF,\n    score_text: `${total} / ${OUT_OF}`,\n    percentage: Math.round((total / OUT_OF) * 100),\n    result: total >= PASS_MARK ? \"PASS\" : \"FAIL\",\n  }};\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1936,
+        -96
+      ],
+      "id": "d9cab853-edcf-4143-9139-574e031b75f6",
+      "name": "Calculate Score & Result"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3cc86a2c-b9fe-4661-8923-b947fb66ea69",
+              "leftValue": "={{ $json.result }}",
+              "rightValue": "=PASS",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2160,
+        -96
+      ],
+      "id": "55984de5-ee60-4a07-b209-b4ee76076257",
+      "name": "🎯 Passed or Failed?"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.result === \"PASS\" ? \"Congratulations! You Passed the Google Analytics Certification Course\" : \"Your Google Analytics Course Result and Retake Date\" }}",
+        "message": "=<div style=\"margin:0;padding:0;background:#05070d;\">\n<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#05070d;padding:24px 0;\">\n<tr><td align=\"center\">\n\n<table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:600px;width:100%;background:#0d1117;border:1px solid #1e3a8a;border-radius:12px;font-family:Arial,Helvetica,sans-serif;color:#e5e7eb;\">\n\n  <!-- Header -->\n  <tr><td style=\"background:#1d4ed8;padding:22px 28px;border-radius:12px 12px 0 0;\">\n    <div style=\"font-size:12px;letter-spacing:2px;color:#bfdbfe;text-transform:uppercase;\">Exam Result</div>\n    <div style=\"font-size:22px;font-weight:bold;color:#ffffff;margin-top:6px;\">Google Analytics Certification Course</div>\n  </td></tr>\n\n  <!-- Greeting -->\n  <tr><td style=\"padding:28px 28px 8px 28px;\">\n    <div style=\"font-size:16px;color:#e5e7eb;\">Hi {{ $json.name }},</div>\n    <div style=\"font-size:15px;line-height:1.6;color:#9ca3af;margin-top:10px;\">\n      Thank you for completing the exam. Here is your final result.\n    </div>\n  </td></tr>\n\n  <!-- Result badge -->\n  <tr><td align=\"center\" style=\"padding:18px 28px;\">\n    <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#111827;border:1px solid {{ $json.result === \"PASS\" ? \"#3b82f6\" : \"#ef4444\" }};border-radius:10px;width:100%;\">\n      <tr><td align=\"center\" style=\"padding:22px;\">\n        <div style=\"font-size:13px;letter-spacing:2px;color:#9ca3af;text-transform:uppercase;\">Your Result</div>\n        <div style=\"font-size:34px;font-weight:bold;color:{{ $json.result === \"PASS\" ? \"#3b82f6\" : \"#ef4444\" }};margin-top:6px;\">{{ $json.result === \"PASS\" ? \"PASSED\" : \"NOT PASSED\" }}</div>\n        <div style=\"font-size:18px;color:#ffffff;margin-top:8px;\">{{ $json.score_text }} &nbsp;•&nbsp; {{ $json.percentage }}%</div>\n        <div style=\"font-size:12px;color:#6b7280;margin-top:6px;\">Pass mark: 15 / 25</div>\n      </td></tr>\n    </table>\n  </td></tr>\n\n  <!-- Score breakdown -->\n  <tr><td style=\"padding:0 28px 8px 28px;\">\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-size:14px;\">\n      <tr>\n        <td style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#9ca3af;\">MCQ Score</td>\n        <td align=\"right\" style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#ffffff;font-weight:bold;\">{{ $json.mcq_score }} / 10</td>\n      </tr>\n      <tr>\n        <td style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#9ca3af;\">Short Answer Score</td>\n        <td align=\"right\" style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#ffffff;font-weight:bold;\">{{ $json.short_total }} / 15</td>\n      </tr>\n    </table>\n  </td></tr>\n\n  <!-- Message -->\n  <tr><td style=\"padding:16px 28px 8px 28px;\">\n    <div style=\"font-size:15px;line-height:1.7;color:#e5e7eb;background:#0b1220;border-left:4px solid {{ $json.result === \"PASS\" ? \"#3b82f6\" : \"#ef4444\" }};padding:14px 16px;border-radius:6px;\">\n      {{ $json.result === \"PASS\"\n        ? \"Congratulations! You have successfully passed the course. <b style='color:#60a5fa;'>Your certificate will be sent to this email address within 1 hour.</b>\"\n        : \"Unfortunately you did not reach the pass mark (15 / 25) this time. Please go through the feedback below to see where you can improve. <b style='color:#f87171;'>You can retake the exam after 5 days, from \" + $now.plus({ days: 5 }).toFormat(\"dd LLLL yyyy\") + \".</b>\" }}\n    </div>\n  </td></tr>\n\n  <!-- Feedback -->\n  <tr><td style=\"padding:18px 28px 8px 28px;\">\n    <div style=\"font-size:14px;letter-spacing:1px;color:#60a5fa;text-transform:uppercase;font-weight:bold;margin-bottom:10px;\">Short Answer Feedback</div>\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-size:14px;\">\n      <tr><td style=\"padding:12px;border-bottom:1px solid #1f2937;\">\n        <span style=\"color:#ffffff;font-weight:bold;\">Q1</span> <span style=\"color:#3b82f6;\">({{ $json.short_scores.q1 }}/3)</span>\n        <div style=\"color:#9ca3af;margin-top:4px;line-height:1.5;\">{{ $json.feedback.q1 }}</div>\n      </td></tr>\n      <tr><td style=\"padding:12px;border-bottom:1px solid #1f2937;\">\n        <span style=\"color:#ffffff;font-weight:bold;\">Q2</span> <span style=\"color:#3b82f6;\">({{ $json.short_scores.q2 }}/3)</span>\n        <div style=\"color:#9ca3af;margin-top:4px;line-height:1.5;\">{{ $json.feedback.q2 }}</div>\n      </td></tr>\n      <tr><td style=\"padding:12px;border-bottom:1px solid #1f2937;\">\n        <span style=\"color:#ffffff;font-weight:bold;\">Q3</span> <span style=\"color:#3b82f6;\">({{ $json.short_scores.q3 }}/3)</span>\n        <div style=\"color:#9ca3af;margin-top:4px;line-height:1.5;\">{{ $json.feedback.q3 }}</div>\n      </td></tr>\n      <tr><td style=\"padding:12px;border-bottom:1px solid #1f2937;\">\n        <span style=\"color:#ffffff;font-weight:bold;\">Q4</span> <span style=\"color:#3b82f6;\">({{ $json.short_scores.q4 }}/3)</span>\n        <div style=\"color:#9ca3af;margin-top:4px;line-height:1.5;\">{{ $json.feedback.q4 }}</div>\n      </td></tr>\n      <tr><td style=\"padding:12px;\">\n        <span style=\"color:#ffffff;font-weight:bold;\">Q5</span> <span style=\"color:#3b82f6;\">({{ $json.short_scores.q5 }}/3)</span>\n        <div style=\"color:#9ca3af;margin-top:4px;line-height:1.5;\">{{ $json.feedback.q5 }}</div>\n      </td></tr>\n    </table>\n  </td></tr>\n\n  <!-- Footer -->\n  <tr><td style=\"padding:22px 28px 28px 28px;border-top:1px solid #1f2937;\">\n    <div style=\"font-size:14px;color:#9ca3af;line-height:1.6;\">Best regards,<br><span style=\"color:#60a5fa;font-weight:bold;\">Course Team</span></div>\n  </td></tr>\n\n</table>\n\n</td></tr>\n</table>\n</div>",
+        "options": {
+          "bccList": "sanjidasultan32@gmail.com",
+          "senderName": "NextGen Institute"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2416,
+        -176
+      ],
+      "id": "026252c6-d646-406d-baf9-e239897caf30",
+      "name": "🎉 Send Pass Email",
+      "webhookId": "e860fef4-ea34-4ea3-89ba-c751da54be6f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bSfWDEl1gAhJMQyk",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Calculate Score & Result').item.json.email }}",
+        "subject": "Your Google Analytics Certification Course Result and Retake Date",
+        "message": "=<div style=\"margin:0;padding:0;background:#05070d;\">\n<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#05070d;padding:24px 0;\">\n<tr><td align=\"center\">\n\n<table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:600px;width:100%;background:#0d1117;border:1px solid #1e3a8a;border-radius:12px;font-family:Arial,Helvetica,sans-serif;color:#e5e7eb;\">\n\n  <!-- Header -->\n  <tr><td style=\"background:#1d4ed8;padding:22px 28px;border-radius:12px 12px 0 0;\">\n    <div style=\"font-size:12px;letter-spacing:2px;color:#bfdbfe;text-transform:uppercase;\">Exam Result</div>\n    <div style=\"font-size:22px;font-weight:bold;color:#ffffff;margin-top:6px;\">Google Analytics Certification Course</div>\n  </td></tr>\n\n  <!-- Greeting -->\n  <tr><td style=\"padding:28px 28px 8px 28px;\">\n    <div style=\"font-size:16px;color:#e5e7eb;\">Hi {{ $json.name }},</div>\n    <div style=\"font-size:15px;line-height:1.7;color:#9ca3af;margin-top:10px;\">\n      Thank you for taking the time to complete the exam. We have reviewed your answers, and unfortunately you did not reach the pass mark this time. This is not the end. Many students pass on their second attempt after reviewing the feedback below.\n    </div>\n  </td></tr>\n\n  <!-- Score box -->\n  <tr><td align=\"center\" style=\"padding:18px 28px;\">\n    <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#111827;border:1px solid #ef4444;border-radius:10px;width:100%;\">\n      <tr><td align=\"center\" style=\"padding:22px;\">\n        <div style=\"font-size:13px;letter-spacing:2px;color:#9ca3af;text-transform:uppercase;\">Your Score</div>\n        <div style=\"font-size:34px;font-weight:bold;color:#ef4444;margin-top:6px;\">{{ $json.score_text }}</div>\n        <div style=\"font-size:16px;color:#ffffff;margin-top:8px;\">{{ $json.percentage }}% &nbsp;•&nbsp; Pass mark: 15 / 25</div>\n      </td></tr>\n    </table>\n  </td></tr>\n\n  <!-- Breakdown -->\n  <tr><td style=\"padding:0 28px 8px 28px;\">\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-size:14px;\">\n      <tr>\n        <td style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#9ca3af;\">MCQ Score</td>\n        <td align=\"right\" style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#ffffff;font-weight:bold;\">{{ $json.mcq_score }} / 10</td>\n      </tr>\n      <tr>\n        <td style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#9ca3af;\">Short Answer Score</td>\n        <td align=\"right\" style=\"padding:10px 12px;background:#111827;border:1px solid #1f2937;color:#ffffff;font-weight:bold;\">{{ $json.short_total }} / 15</td>\n      </tr>\n    </table>\n  </td></tr>\n\n  <!-- Areas to improve -->\n  <tr><td style=\"padding:18px 28px 8px 28px;\">\n    <div style=\"font-size:14px;letter-spacing:1px;color:#60a5fa;text-transform:uppercase;font-weight:bold;margin-bottom:10px;\">Areas to Improve</div>\n    <ul style=\"margin:0;padding-left:20px;font-size:14px;line-height:1.6;color:#9ca3af;\">\n      {{ [\"q1\",\"q2\",\"q3\",\"q4\",\"q5\"].filter(q => $json.short_scores[q] < 3).map(q => \"<li style='margin-bottom:10px;'><b style='color:#ffffff;'>\" + q.toUpperCase() + \"</b> <span style='color:#3b82f6;'>(\" + $json.short_scores[q] + \"/3)</span><br>\" + $json.feedback[q] + \"</li>\").join(\"\") }}\n    </ul>\n  </td></tr>\n\n  <!-- Retake box -->\n  <tr><td style=\"padding:16px 28px 8px 28px;\">\n    <div style=\"font-size:15px;line-height:1.7;color:#e5e7eb;background:#0b1220;border-left:4px solid #3b82f6;padding:14px 16px;border-radius:6px;\">\n      <b style=\"color:#60a5fa;\">Retake the exam:</b> You can attempt the exam again after 5 days, from <b style=\"color:#ffffff;\">{{ $now.plus({ days: 5 }).toFormat(\"dd LLLL yyyy\") }}</b>. Use this time to revise the topics above.\n    </div>\n  </td></tr>\n\n  <!-- Tips -->\n  <tr><td style=\"padding:16px 28px 8px 28px;\">\n    <div style=\"font-size:14px;letter-spacing:1px;color:#60a5fa;text-transform:uppercase;font-weight:bold;margin-bottom:8px;\">Tips for Your Next Attempt</div>\n    <ul style=\"margin:0;padding-left:20px;font-size:14px;line-height:1.7;color:#9ca3af;\">\n      <li>Write a separate answer for each question. Repeated answers receive 0 marks.</li>\n      <li>Cover all key points, for example definitions, examples and steps.</li>\n      <li>Revise GA4 events, UTM parameters, audiences and conversion setup.</li>\n    </ul>\n  </td></tr>\n\n  <!-- Footer -->\n  <tr><td style=\"padding:22px 28px 28px 28px;border-top:1px solid #1f2937;\">\n    <div style=\"font-size:14px;color:#9ca3af;line-height:1.6;\">We wish you the best for your next attempt.<br><br>Best regards,<br><span style=\"color:#60a5fa;font-weight:bold;\">NextGen Institute</span></div>\n  </td></tr>\n\n</table>\n\n</td></tr>\n</table>\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2416,
+        0
+      ],
+      "id": "2694e631-e679-47cd-bff0-5eed1a20b822",
+      "name": "🔄 Send Retake Email",
+      "webhookId": "e2eac766-b51d-4baa-a102-aca20b2f8342",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "bSfWDEl1gAhJMQyk",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "🏁 Next Student",
+      "typeVersion": 1,
+      "position": [
+        2688,
+        -80
+      ],
+      "id": "71b58480-4415-40c7-9a66-95fc5885d499",
+      "placeholder": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c0a143f6-1e37-4b7d-8a71-099ee61d82c6",
+              "leftValue": "={{ $json.result }}",
+              "rightValue": "PASS",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2176,
+        304
+      ],
+      "id": "2e2eda96-f390-4e8d-b8e0-6205b334c9a2",
+      "name": "🏅 Passed?"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s",
+          "mode": "list",
+          "cachedResultName": "students  submited form",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1674523012,
+          "mode": "list",
+          "cachedResultName": "for certificate ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QVcUEIibELoQxYzy_QaDfHxwBfmVv44f5fv4AaBcN3s/edit#gid=1674523012"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Full Name": "={{ $json.name }}",
+            "Total": "={{ $json.total }}",
+            "Mcq score": "={{ $json.mcq_score }}",
+            "short questions": "={{ $json.short_total }}",
+            "Course:": "={{ $('⏳ 30-Day Wait Check').item.json['Course Name'] }}",
+            "  Email:  ": "={{ $json.email }}",
+            " Date:": "={{ $('⏳ 30-Day Wait Check').item.json.Date }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "  Email:  ",
+              "displayName": "  Email:  ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Course:",
+              "displayName": "Course:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Date:",
+              "displayName": " Date:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total",
+              "displayName": "Total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mcq score",
+              "displayName": "Mcq score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "short questions",
+              "displayName": "short questions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2416,
+        192
+      ],
+      "id": "39baabce-7d06-4890-9469-958539dc53ac",
+      "name": "Add to Certificate Queue",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gMET6VW9mKOc04zd",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an exam examiner for the \"Google Analytics Certification Course\". Grade ONLY the 5 short-answer questions below. Do NOT re-grade the MCQs; the MCQ score comes from the form and must be copied as it is.\n\nSTUDENT\nName: {{ $('New Exam Submission').item.json[\"Full Name\"] }}\nEmail: {{ $('New Exam Submission').item.json[\"ইমেল ঠিকানা\"] }}\nMCQ Score (from form):{{ $('New Exam Submission').item.json['স্কোর'] }}\n\nSHORT ANSWERS SUBMITTED\n\nQ1. Explain the difference between Universal Analytics and GA4 (any 2-3 key differences).\nStudent answer: {{ $('New Exam Submission').item.json['1. Explain the difference between Universal Analytics and GA4. (any 2-3 key differences)'] }}\n\nQ2. What is an \"Event\" in GA4? Give two examples of custom events.\nStudent answer: {{ $('New Exam Submission').item.json['2. What is an \"Event\" in GA4? Give two examples of custom events.'] }}\n\nQ3. How does UTM parameter tracking help in measuring campaign performance?\nStudent answer:{{ $('New Exam Submission').item.json['3. How does UTM parameter tracking help in measuring campaign performance?'] }}\n\nQ4. Explain the purpose of \"Audiences\" in Google Analytics.\nStudent answer: {{ $('New Exam Submission').item.json['4. Explain the purpose of \"Audiences\" in Google Analytics.'] }}\n\nQ5. What steps would you take to set up a conversion goal for a \"Contact Form Submission\"?\nStudent answer: {{ $('New Exam Submission').item.json['5. What steps would you take to set up a conversion goal for a \"Contact Form Submission\"?'] }}\nMARKING SCHEME (each question = 3 marks, total short score = 15)\n- 3 marks: correct, covers all the key points below.\n- 2 marks: mostly correct, one small point missing.\n- 1 mark: partly correct, an important point is missing.\n- 0 marks: wrong, irrelevant, empty, or clearly answers a different question.\n\nKey points expected:\nQ1: any 2-3 valid differences, e.g. UA is session/pageview based and GA4 is event based; GA4 uses Data Streams instead of Views; Engagement Rate replaces Bounce Rate as main metric; GA4 is more privacy-focused, has predictive/ML insights, free BigQuery export; UA is discontinued.\nQ2: an event is any user interaction recorded by GA4 (page_view, click, scroll, purchase etc.) AND two valid CUSTOM events (e.g. form_submit, button_click, video_play, file_download, newsletter_signup, add_to_wishlist). Automatic events like page_view or scroll do not count as custom examples.\nQ3: UTM parameters (utm_source, utm_medium, utm_campaign, optionally utm_term, utm_content) are added to URLs so GA shows which campaign/channel/link brings traffic and conversions; helps compare campaigns and measure ROI.\nQ4: Audiences group users by shared behavior or attributes (e.g. purchasers, cart abandoners); used for segmentation/analysis and remarketing/targeting in Google Ads.\nQ5: (1) track the form submission as a thank-you page view or form_submit event (GA4 or Google Tag Manager), (2) test with Realtime/DebugView, (3) in GA4 Admin > Events mark it as a key event/conversion, (4) verify and monitor in reports.\n\nRULES\n- Judge by meaning, not exact wording. Do not penalise spelling or grammar.\n- If an answer is identical (or nearly identical) to the student's answer for another question, give 0 for the wrong one and add it to \"flags\".\n- Be strict but fair; do not invent points the student did not write.\n- Read the number before \"/\" in the MCQ score (e.g. \"7 / 10\" -> 7).\n- Calculate: short_total = q1+q2+q3+q4+q5 (maximum 15). total = mcq_score + short_total (maximum 25). percentage = (total / 25) * 100, rounded to the nearest whole number.\n- Result: if total >= 15 then result = \"PASS\", otherwise result = \"FAIL\".\n- Show the score in the \"score_text\" field like \"18 / 25\".\n- Write feedback in simple English, 1 sentence per question.\n\nReturn ONLY valid JSON, no markdown, no extra text:\n{\n  \"name\": \"\",\n  \"email\": \"\",\n  \"mcq_score\": 0,\n  \"short_scores\": { \"q1\": 0, \"q2\": 0, \"q3\": 0, \"q4\": 0, \"q5\": 0 },\n  \"short_total\": 0,\n  \"total\": 0,\n  \"out_of\": 25,\n  \"score_text\": \"0 / 25\",\n  \"percentage\": 0,\n  \"result\": \"PASS\",\n  \"flags\": [],\n  \"feedback\": { \"q1\": \"\", \"q2\": \"\", \"q3\": \"\", \"q4\": \"\", \"q5\": \"\" }\n}\n\n- If you detect a duplicated answer, you MUST add a text like \"Q5 duplicated from Q4\" to the \"flags\" array. Never leave \"flags\" empty in that case.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1568,
+        -96
+      ],
+      "id": "294a4f64-b222-4dfe-9e5a-1bf20ed83711",
+      "name": "AI Exam Grader",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "New Exam Submission": {
+      "main": [
+        [
+          {
+            "node": "Clean Form Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Form Data": {
+      "main": [
+        [
+          {
+            "node": "Process Each Student",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Each Student": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Find Student Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Student Record": {
+      "main": [
+        [
+          {
+            "node": "✅ Student Matched?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "✅ Student Matched?": {
+      "main": [
+        [
+          {
+            "node": "⏳ 30-Day Wait Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⏳ 30-Day Wait Check": {
+      "main": [
+        [
+          {
+            "node": "Ready for Grading?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ready for Grading?": {
+      "main": [
+        [
+          {
+            "node": "AI Exam Grader",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT-4o": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Exam Grader",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Score & Result": {
+      "main": [
+        [
+          {
+            "node": "🎯 Passed or Failed?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "🏅 Passed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🎯 Passed or Failed?": {
+      "main": [
+        [
+          {
+            "node": "🎉 Send Pass Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "🔄 Send Retake Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🎉 Send Pass Email": {
+      "main": [
+        [
+          {
+            "node": "🏁 Next Student",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔄 Send Retake Email": {
+      "main": [
+        [
+          {
+            "node": "🏁 Next Student",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🏁 Next Student": {
+      "main": [
+        [
+          {
+            "node": "Process Each Student",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🏅 Passed?": {
+      "main": [
+        [
+          {
+            "node": "Add to Certificate Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Certificate Queue": {
+      "main": [
+        []
+      ]
+    },
+    "AI Exam Grader": {
+      "main": [
+        [
+          {
+            "node": "Calculate Score & Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": true
+  },
+  "versionId": "33bcad1d-6711-4e07-8d23-406ad946a0a5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d5ebb673614b749e69feb02bc3a492474e36969d1c6e2793c3a02be760bb7954"
+  },
+  "nodeGroups": [],
+  "id": "U4PKJo2S3IZpSgFA",
+  "tags": []
+}
